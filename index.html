@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+	<link rel="icon" type="image/png" sizes="64*64" href="/favicon_64.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon_32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
+
+    <title>Page-o-tron</title>
+  </head>
+  <body>
+	  <header class="container">
+	    <h1>Page-o-tron</h1>
+	  </header>
+
+	<form action="#" class="container mb-4">
+		<div class="form-floating">
+			<select class="form-select" name="category" id="category">
+				<option value="achievements">Succès</option>
+				<option value="achievements_categories">Catégories de succès</option>
+				<option value="masteries">Maîtrises</option>
+				<option value="items" selected>Objets</option>
+				<option value="minis">Miniatures</option>
+				<option value="mounts">Montures</option>
+				<option value="quests">Quêtes</option>
+				<option value="recipes">Recettes</option>
+				<option value="skills">Compétences</option>
+				<option value="skins">Apparences</option>
+			</select>
+			<label for="category">Catégories</label>
+		</div>
+
+		<div class="input-group">
+			<div class="form-floating">
+				<input type="search" class="form-control" name="entry" id="entry" list="entries" autocomplete="off"/>
+				<label for="entry">ID</label>
+				<datalist id="entries"></datalist>
+			</div>
+			<button class="btn btn-primary" type="submit">Générer</button>
+		</div>
+	</form>
+
+	<div class="container">
+		<div class="d-inline-flex align-items-center">
+			<h2 id="pageTitle" class="me-2"></h2>
+			<button type="button" id="copy" class="btn btn-primary me-2" hidden>Copier le code</button>
+			<a href="#" target="_blank" id="wiki" class="btn btn-primary" hidden>Page du wiki</a>
+		</div>
+		<div class="form-floating">
+			<textarea class="form-control" name="code" id="code" rows="25" style="height: 500px;"></textarea>
+			<label for="code">Page générée</label>
+		</div>
+	</div>
+	<div class="container">
+		<details>
+			<summary>Debug log</summary>
+			<div class="form-floating">
+				<textarea class="form-control" name="debug" id="debug" style="height: 250px;"></textarea>
+				<label for="debug">Debug</label>
+			</div>
+		</details>
+	</div>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>
