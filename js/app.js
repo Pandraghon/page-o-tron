@@ -8,6 +8,7 @@
 	const pageTitle = document.getElementById('pageTitle');
 	const copyButton = document.getElementById('copy');
 	const wikiLink = document.getElementById('wiki');
+	const wikiAlert = document.getElementById('wikiAlert');
 
 	const rarityMapping = {
 		Junk: 'inutile',
@@ -94,8 +95,6 @@
 							`{{Table de succès/ligne`,
 							`| nom = ${res.name}`
 						);
-						//`| icône =`,
-						//`| page =`,
 
 						if (res.flags.indexOf('CategoryDisplay') !== -1) achievementsLines.push(`| type = meta`);
 						if (res.flags.indexOf('Repeatable') !== -1) achievementsLines.push(`| type = répétable`);
@@ -104,17 +103,8 @@
 						if (res.point_cap) achievementsLines.push(`| max points = ${res.point_cap}`);
 						if (res.description) achievementsLines.push(`| description = ${res.description}`);
 						if (res.requirement) achievementsLines.push(`| sous_desc = ${res.requirement}`);
-						//`| parent =`,
-						//`| prérequis =`,
-						//`| emplacement =`,
-						//`| récompense =`,
-						//`| récompense-niveau =`,
-						//`| quantité  =`,
-						//`| paliers =`,
-						//`| activité =`,
-						//`| obsolète =`,
 
-						if (res.tiers.length) achievementsLines.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
+						if (res.tiers.length > 1) achievementsLines.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
 
 						for (let reward of (res.rewards || [])) {
 							switch (reward.type) {
@@ -143,7 +133,9 @@
 			}
 
 			body.push(...[
-				`{{Navigation succès}}`
+				`{{Navigation succès}}`,
+				``,
+				`[[Catégorie:Succès]]`
 			])
 
 			return [
@@ -169,10 +161,10 @@
 				const frag = document.createDocumentFragment();
 				for (let i = 0, imax = lines.length ; i < imax ; i++) {
 					if (!lines[i]) continue;
-					const line_data = lines[i].match(/"(.*)",(\d+)/);
+					const line_data = lines[i].match(/(".*"),(\d+)/);
 					const option = document.createElement('option');
 					Object.assign(option, {
-						value: `[${line_data[2]}] ${line_data[1]}`
+						value: `[${line_data[2]}] ${JSON.parse(line_data[1])}`
 					});
 					frag.append(option);
 				}
@@ -204,6 +196,7 @@
 				}
 				pageTitle.innerText = res.name ?? '';
 				wikiLink.href = `https://wiki-fr.guildwars2.com/index.php?title=${res.name}&action=edit`;
+				wikiLink.innerText = res.name;
 				copyButton.classList.remove('btn-success');
 				copyButton.classList.add('btn-primary');
 				const generatedText = await categoryParser[sanitizedCategory](res);
@@ -217,7 +210,7 @@
 				}
 				codeTextarea.value = generatedText.join('\n');
 				copyButton.hidden = false;
-				wikiLink.hidden = false;
+				wikiAlert.hidden = false;
 			})
 			.catch(console.error);
 		return false;
