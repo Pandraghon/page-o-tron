@@ -104,7 +104,7 @@
 						if (res.description) achievementsLines.push(`| description = ${res.description}`);
 						if (res.requirement) achievementsLines.push(`| sous_desc = ${res.requirement}`);
 
-						if (res.tiers.length > 1) achievementsLines.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
+						achievementsLines.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
 
 						for (let reward of (res.rewards || [])) {
 							switch (reward.type) {
