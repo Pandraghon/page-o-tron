@@ -144,6 +144,7 @@
 				`== Liste des succès ==`,
 				`{{Table de succès}}`,
 				...achievementsLines,
+				`|}`,
 				``,
 				...body,
 				``,
