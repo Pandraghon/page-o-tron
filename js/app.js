@@ -138,7 +138,7 @@
 					.catch(console.error);
 			}
 
-			achievementsLines.concat(achievementsLinesData.sort((a, b) => {
+			achievementsLines = achievementsLines.concat(...(achievementsLinesData.sort((a, b) => {
 				// display meta first
 				if (a.data.flags.indexOf('CategoryDisplay') !== -1) return -1;
 				if (b.data.flags.indexOf('CategoryDisplay') !== -1) return 1;
@@ -148,7 +148,7 @@
 				if (a.data.name > b.data.name) return 1;
 
 				return 0;
-			}).map(e => e.code))
+			}).map(e => e.code)));
 
 			body.push(...[
 				`{{Navigation succès}}`,
