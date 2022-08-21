@@ -85,6 +85,7 @@
 		},
 		achievements_categories: async (data) => {
 			let achievementsLines = [],
+				achievementsLinesData = [],
 				body = [],
 				intro = [`[[{{PAGENAME}}]] est une catégorie de [[succès]].`];
 
@@ -92,46 +93,62 @@
 				await fetch(`https://api.guildwars2.com/v2/achievements/${achievementId}?lang=fr`)
 					.then(res => res.json())
 					.then(async res => {
-						achievementsLines.push(
+						const achievementsLine = [
 							`{{Table de succès/ligne`,
 							`| nom = ${res.name}`
-						);
+						];
 
-						if (res.flags.indexOf('CategoryDisplay') !== -1) achievementsLines.push(`| type = meta`);
-						if (res.flags.indexOf('Repeatable') !== -1) achievementsLines.push(`| type = répétable`);
-						else achievementsLines.push(`| type = standard`);
+						if (res.flags.indexOf('CategoryDisplay') !== -1) achievementsLine.push(`| type = meta`);
+						if (res.flags.indexOf('Repeatable') !== -1) achievementsLine.push(`| type = répétable`);
+						else achievementsLine.push(`| type = standard`);
 						
-						if (res.point_cap) achievementsLines.push(`| max points = ${res.point_cap}`);
-						if (res.description) achievementsLines.push(`| sous_desc = ${res.description}`);
-						if (res.requirement) achievementsLines.push(`| description = ${res.requirement}`);
+						if (res.point_cap) achievementsLine.push(`| max points = ${res.point_cap}`);
+						if (res.description) achievementsLine.push(`| sous_desc = ${res.description}`);
+						if (res.requirement) achievementsLine.push(`| description = ${res.requirement}`);
 
-						achievementsLines.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
+						achievementsLine.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
 
 						for (let reward of (res.rewards || [])) {
 							switch (reward.type) {
 								case 'Coins':
-									achievementsLines.push(`| pièces = ${reward.count}`);
+									achievementsLine.push(`| pièces = ${reward.count}`);
 									break;
 								case 'Mastery':
-									achievementsLines.push(`| point de maîtrise = ${masteryMapping[reward.region]}`);
+									achievementsLine.push(`| point de maîtrise = ${masteryMapping[reward.region]}`);
 									break;
 								case 'Title':
 									await fetch(`https://api.guildwars2.com/v2/titles/${reward.id}?lang=fr`)
 										.then(res => res.json())
 										.then(res => {
-											achievementsLines.push(`| titre = ${res.name}`);
+											achievementsLine.push(`| titre = ${res.name}`);
 										})
 										.catch(console.error);
 									break;
 							}
 						}
 							
-						achievementsLines.push(
+						achievementsLine.push(
 							`}}`
 						);
+						achievementsLinesData.push({
+							data: res,
+							code: achievementsLine
+						});
 					})
 					.catch(console.error);
 			}
+
+			achievementsLines.concat(achievementsLinesData.sort((a, b) => {
+				// display meta first
+				if (a.data.flags.indexOf('CategoryDisplay') !== -1) return -1;
+				if (b.data.flags.indexOf('CategoryDisplay') !== -1) return 1;
+
+				// sort by name
+				if (a.data.name < b.data.name)  return -1;
+				if (a.data.name > b.data.name) return 1;
+
+				return 0;
+			}).map(e => e.code))
 
 			body.push(...[
 				`{{Navigation succès}}`,
