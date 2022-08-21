@@ -51,7 +51,8 @@
 		Maguuma: 'Maguuma',
 		Desert: 'Désert',
 		Tundra: 'Givre',
-		Cantha: 'Cantha'
+		Cantha: 'Cantha',
+		Unknown: 'Cantha'
 	};
 
 	const categoryParser = {
