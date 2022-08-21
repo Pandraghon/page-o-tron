@@ -102,8 +102,8 @@
 						else achievementsLines.push(`| type = standard`);
 						
 						if (res.point_cap) achievementsLines.push(`| max points = ${res.point_cap}`);
-						if (res.description) achievementsLines.push(`| description = ${res.description}`);
-						if (res.requirement) achievementsLines.push(`| sous_desc = ${res.requirement}`);
+						if (res.description) achievementsLines.push(`| sous_desc = ${res.description}`);
+						if (res.requirement) achievementsLines.push(`| description = ${res.requirement}`);
 
 						achievementsLines.push(`| paliers = ${res.tiers.map(tier => `{{...}} : ${tier.count} ; ${tier.points}`).join('\n')}`);
 
