@@ -87,7 +87,7 @@
 			let achievementsLines = [],
 				achievementsLinesData = [],
 				body = [],
-				intro = [`[[{{PAGENAME}}]] est une catégorie de [[succès]].`];
+				intro = [`[[Fichier:{{PAGENAME}}.png|left|40px]] [[{{PAGENAME}}]] est une catégorie de [[succès]] de [[...]].`];
 
 			for (let achievementId of data.achievements) {
 				await fetch(`https://api.guildwars2.com/v2/achievements/${achievementId}?lang=fr`)
@@ -160,7 +160,7 @@
 				...intro,
 				``,
 				`== Liste des succès ==`,
-				`{{Table de succès}}`,
+				`{{Table de succès | icône = {{PAGENAME}}.png}}`,
 				...achievementsLines,
 				`|}`,
 				``,
