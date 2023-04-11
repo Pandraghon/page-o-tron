@@ -167,6 +167,11 @@
 				...body,
 				``,
 			];
+		},
+		titles: async (data) => {
+			const { achievements } = data;
+			const achievementsData = await fetch(`https://api.guildwars2.com/v2/achievements?ids=${achievements.join(',')}&lang=fr`).then(res => res.json());
+			return [`${data.name} - Obtenu en terminant le(s) succès ${achievementsData.map(a => a.name).join(', ')}`];
 		}
 	};
 
