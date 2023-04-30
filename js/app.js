@@ -100,7 +100,6 @@
 
 						if (res.flags.indexOf('CategoryDisplay') !== -1) achievementsLine.push(`| type = meta`);
 						else if (res.flags.indexOf('Repeatable') !== -1) achievementsLine.push(`| type = répétable`);
-						else achievementsLine.push(`| type = standard`);
 						
 						if (res.point_cap) achievementsLine.push(`| max points = ${res.point_cap}`);
 						if (res.description) achievementsLine.push(`| sous_desc = ${res.description}`);
