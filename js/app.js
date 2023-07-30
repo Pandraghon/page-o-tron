@@ -317,7 +317,7 @@
 				boxType: 'object', 
 				data, 
 				body: [],
-				boxLines = []
+				boxLines: []
 			};
 
 			if (data.type in itemTypeParser) builder = itemTypeParser[data.type](builder) || [];
