@@ -541,11 +541,16 @@
 	const addRecipe = async (builder, recipe) => {
 		const lines = [
 			'{{Recette',
-			// matériaux
-			`| produits = ${recipe.output_item_count}`,
-			// discipline
-			`| difficulté = ${recipe.min_rating}`,
 		];
+
+		for (let i = 0, imax = recipe.ingredients.length ; i < imax ; i++) {
+			const ingredient = await fetch(`https://api.guildwars2.com/v2/items/${recipe.ingredients[i].item_id}?lang=fr`)
+				.then(res => res.json());
+			lines.push(...[
+				`| qté${i + 1} = ${recipe.ingredients[i].count}`,
+				`| mat${i + 1} = ingredient.name`
+			]);
+		}
 
 		if (recipe.flags?.length) {
 			switch (recipe.flags[0]) {
@@ -559,7 +564,13 @@
 			}
 		}
 
+		for (let i = 0, imax = recipe.disciplines.length ; i < imax ; i++) {
+			lines.push(`| discipline${i > 0 ? i + 1 : ''} = ${professionMapping[recipe.disciplines[i]]}`);
+		}
+
 		lines.push(...[
+			`| difficulté = ${recipe.min_rating}`,
+			`| produits = ${recipe.output_item_count}`,
 			`| type = ${recipeTypeMapping[recipe.type]}`,
 			`| id = ${recipe.id}`,
 			'}}',
