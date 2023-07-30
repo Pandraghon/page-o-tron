@@ -56,28 +56,28 @@
 	};
 
 	const itemTypeParser = {
-		Trophy: ({type}) => {
-			type = 'trophée';
+		Trophy: (_) => {
+			_.type = 'trophée';
 		},
-		Armor: ({type, boxType, data}) => {
-			type = 'armure';
-			boxType = 'armure';
+		Armor: (_) => {
+			_.type = 'armure';
+			_.boxType = 'armure';
 
 			boxLines = [];
 
-			switch (data.details.weight_class) {
+			switch (_.data.details.weight_class) {
 				case 'Heavy':
-					type = 'lourd';
+					_.type = 'lourd';
 					break;
 				case 'Medium':
-					type = 'intermédiaire';
+					_.type = 'intermédiaire';
 					break;
 				case 'Light':
-					type = 'léger';
+					_.type = 'léger';
 					break;
 			}
 			
-			switch (data.details.type) {
+			switch (_.data.details.type) {
 				case 'Boots':
 					boxLines.push('| emplacement = pieds');
 					break;
@@ -101,182 +101,182 @@
 
 			return boxLines;
 		},
-		Back: ({type, boxType}) => {
-			type = 'dos';
-			boxType = 'accessoire';
+		Back: (_) => {
+			_.type = 'dos';
+			_.boxType = 'accessoire';
 		},
-		Bag: ({type}) => {
-			type = 'sac';
+		Bag: (_) => {
+			_.type = 'sac';
 		},
-		Consumable: ({type, data}) => {
-			type = 'consommable';
+		Consumable: (_) => {
+			_.type = 'consommable';
 
-			if (data.name.startsWith('Coup de grâce')) type = 'coup de grâce';
-			else if (data.details.unlock_type === 'Ms') type = 'monture';
+			if (_.data.name.startsWith('Coup de grâce')) _.type = 'coup de grâce';
+			else if (_.data.details.unlock_type === 'Ms') _.type = 'monture';
 		},
-		Container: ({type, body}) => {
-			type = 'conteneur';
+		Container: (_) => {
+			_.type = 'conteneur';
 
-			body.push('== Contient ==');
-			body.push('{{...}}');
+			_.body.push('== Contient ==');
+			_.body.push('{{...}}');
 		},
-		CraftingMaterial: ({type, data}) => {
-			type = 'matériau d\'artisanat';
+		CraftingMaterial: (_) => {
+			_.type = 'matériau d\'artisanat';
 
-			if (data.name.startsWith('Insigne')) type = 'insigne';
-			else if (data.name.startsWith('Inscription')) type = 'inscription';
+			if (_.data.name.startsWith('Insigne')) _.type = 'insigne';
+			else if (_.data.name.startsWith('Inscription')) _.type = 'inscription';
 		},
-		Gathering: ({type}) => {
-			type = 'outil de récolte';
+		Gathering: (_) => {
+			_.type = 'outil de récolte';
 		},
-		Gizmo: ({type}) => {
-			type = 'gizmo';
+		Gizmo: (_) => {
+			_.type = 'gizmo';
 		},
-		MiniPet: ({type, boxType}) => {
-			type = 'miniature';
-			boxType = 'miniature';
+		MiniPet: (_) => {
+			_.type = 'miniature';
+			_.boxType = 'miniature';
 		},
-		Tool: ({type}) => {
-			type = 'outil de recyclage';
+		Tool: (_) => {
+			_.type = 'outil de recyclage';
 		},
-		Trinket: ({type, boxType, data}) => {
-			type = 'colifichet';
-			boxType = 'accessoire';
+		Trinket: (_) => {
+			_.type = 'colifichet';
+			_.boxType = 'accessoire';
 
-			switch (data.details) {
+			switch (_.data.details) {
 				case 'Amulet':
-					type = 'amulette';
+					_.type = 'amulette';
 					break;
 				case 'Ring':
-					type = 'anneau';
+					_.type = 'anneau';
 					break;
 				case 'Accessory':
-					type = 'accessoire';
+					_.type = 'accessoire';
 					break;
 			}
 		},
-		UpgradeComponent: ({type}) => {
-			type = 'amélioration';
+		UpgradeComponent: (_) => {
+			_.type = 'amélioration';
 		},
-		Weapon: ({type, boxType, data}) => {
-			type = 'arme';
-			boxType = 'arme';
+		Weapon: (_) => {
+			_.type = 'arme';
+			_.boxType = 'arme';
 
-			switch (data.details.type) {
+			switch (_.data.details.type) {
 				case 'Axe':
-					type = 'hache';
+					_.type = 'hache';
 					break;
 				case 'Dagger':
-					type = 'dague';
+					_.type = 'dague';
 					break;
 				case 'Mace':
-					type = 'masse';
+					_.type = 'masse';
 					break;
 				case 'Pistol':
-					type = 'pistolet';
+					_.type = 'pistolet';
 					break;
 				case 'Scepter':
-					type = 'sceptre';
+					_.type = 'sceptre';
 					break;
 				case 'Focus':
-					type = 'focus';
+					_.type = 'focus';
 					break;
 				case 'Shield':
-					type = 'bouclier';
+					_.type = 'bouclier';
 					break;
 				case 'Sword':
-					type = 'épée';
+					_.type = 'épée';
 					break;
 				case 'Torch':
-					type = 'torche';
+					_.type = 'torche';
 					break;
 				case 'Warhorn':
-					type = 'cor de guerre';
+					_.type = 'cor de guerre';
 					break;
 				case 'Greatsword':
-					type = 'espadon';
+					_.type = 'espadon';
 					break;
 				case 'Hammer':
-					type = 'marteau';
+					_.type = 'marteau';
 					break;
 				case 'LongBow':
-					type = 'arc long';
+					_.type = 'arc long';
 					break;
 				case 'Rifle':
-					type = 'fusil';
+					_.type = 'fusil';
 					break;
 				case 'ShortBow':
-					type = 'arc court';
+					_.type = 'arc court';
 					break;
 				case 'Staff':
-					type = 'bâton';
+					_.type = 'bâton';
 					break;
 				case 'Harpoon':
-					type = 'lance';
+					_.type = 'lance';
 					break;
 				case 'Speargun':
-					type = 'fusil-harpon';
+					_.type = 'fusil-harpon';
 					break;
 				case 'Trident':
-					type = 'trident';
+					_.type = 'trident';
 					break;
 			}
 		},
 	};
 
 	const itemUnlockParser = {
-		CraftingRecipe: ({type, boxType, data, body}) => {
-			type = 'recette';
+		CraftingRecipe: (_) => {
+			_.type = 'recette';
 			/* */
 		},
-		Outfit: ({type, boxType, data, body}) => {
-			type = 'tenue';
+		Outfit: (_) => {
+			_.type = 'tenue';
 		},
-		Dye: ({type, boxType, data, body}) => {
-			boxType = 'teinture';
+		Dye: (_) => {
+			_.boxType = 'teinture';
 			/* */
 		},
-		GliderSkin: ({type, boxType, data, body}) => {
-			type = 'deltaplane';
+		GliderSkin: (_) => {
+			_.type = 'deltaplane';
 		},
-		Champion: ({type, boxType, data, body}) => {
-			type = 'champion des brumes';
+		Champion: (_) => {
+			_.type = 'champion des brumes';
 		},
 	};
 
 	const itemDetailsParser = {
-		Default: ({type, boxType, data, body}) => {
-			if (data.details.infusion_upgrade_flags) {
-				type = 'infusion';
-				boxType = 'amélioration';
+		Default: (_) => {
+			if (_.data.details.infusion_upgrade_flags) {
+				_.type = 'infusion';
+				_.boxType = 'amélioration';
 				/* */
 			}
 		},
-		Rune: ({type, boxType, data, body}) => {
-			type = 'rune';
-			boxType = 'amélioration';
+		Rune: (_) => {
+			_.type = 'rune';
+			_.boxType = 'amélioration';
 		},
-		Sigil: ({type, boxType, data, body}) => {
-			type = 'cachet';
-			boxType = 'amélioration';
+		Sigil: (_) => {
+			_.type = 'cachet';
+			_.boxType = 'amélioration';
 		},
-		Transmutation: ({type, boxType, data, body}) => {
-			type = 'apparence';
+		Transmutation: (_) => {
+			_.type = 'apparence';
 		},
-		Immediate: ({type, boxType, data, body}) => {
-			type = 'services';
+		Immediate: (_) => {
+			_.type = 'services';
 		},
-		Utility: ({type, boxType, data, body}) => {
-			type = 'utilitaire';
+		Utility: (_) => {
+			_.type = 'utilitaire';
 		},
-		Food: ({type, boxType, data, body}) => {
-			type = 'nourriture';
+		Food: (_) => {
+			_.type = 'nourriture';
 		},
-		Gem: ({type, boxType, data, body}) => {
-			type = 'pierre précieuse';
+		Gem: (_) => {
+			_.type = 'pierre précieuse';
 		},
-		Booze: ({type, boxType, data, body}) => {
-			type = 'alcool';
+		Booze: (_) => {
+			_.type = 'alcool';
 		},
 	}
 
