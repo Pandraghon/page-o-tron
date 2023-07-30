@@ -547,14 +547,16 @@
 			`| difficulté = ${recipe.min_rating}`,
 		];
 
-		switch (recipe.flags[0]) {
-			case 'AutoLearned':
-				lines.push('| acquisition = automatique');
-				break;
-			case 'LearnedFromItem':
-				break;
-			default:
-				lines.push('| acquisition = découverte');
+		if (recipe.flags?.length) {
+			switch (recipe.flags[0]) {
+				case 'AutoLearned':
+					lines.push('| acquisition = automatique');
+					break;
+				case 'LearnedFromItem':
+					break;
+				default:
+					lines.push('| acquisition = découverte');
+			}
 		}
 
 		lines.concat([
@@ -586,7 +588,7 @@
 			// edge cases
 			if (data.description === 'Objet recyclable') builder.type = 'objet recyclable';
 			else if (data.details?.guild_upgrade_id) builder.type = 'décoration';
-			else if (data.details?.flags[0] === 'Trinket') builder.type = 'bijou';
+			else if (data.details?.flags?.length && data.details.flags[0] === 'Trinket') builder.type = 'bijou';
 
 			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
