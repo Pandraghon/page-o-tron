@@ -559,14 +559,14 @@
 			}
 		}
 
-		lines.concat([
+		lines.push(...[
 			`| type = ${recipeTypeMapping[recipe.type]}`,
 			`| id = ${recipe.id}`,
 			'}}',
 			''
 		])
 
-		builder.body.concat(lines)
+		builder.body.push(...lines)
 
 		return builder
 	};
