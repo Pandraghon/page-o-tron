@@ -566,7 +566,7 @@
 			''
 		])
 
-		builder.boxLines.concat(lines)
+		builder.body.concat(lines)
 
 		return builder
 	};
