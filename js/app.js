@@ -272,11 +272,17 @@
 		Rune: (_) => {
 			_.type = 'rune';
 			_.boxType = 'amélioration';
+			const element = /<\/c>([^<]+)<br>/.exec(_.data.description);
+			_.boxLines.push(`| élément = ${element[1]}`);
+			_.data.description = '';
 			return _;
 		},
 		Sigil: (_) => {
 			_.type = 'cachet';
 			_.boxType = 'amélioration';
+			const element = /<\/c>([^<]+)<br>/.exec(_.data.description);
+			_.boxLines.push(`| élément = ${element[1]}`);
+			_.data.description = '';
 			return _;
 		},
 		Transmutation: (_) => {
@@ -285,10 +291,13 @@
 		},
 		Immediate: (_) => {
 			_.type = 'services';
+			_.boxLines.push('| lié = ca');
 			return _;
 		},
 		Utility: (_) => {
 			_.type = 'utilitaire';
+
+			if (_.data.name.startsWith('Potion')) _.type = 'potion';
 			return _;
 		},
 		Food: (_) => {
@@ -316,8 +325,13 @@
 			};
 
 			if (data.type in itemTypeParser) builder = itemTypeParser[data.type](builder) || [];
-			if (data.details.unlock_type in itemUnlockParser) builder = itemUnlockParser[data.details.unlock_type](builder);
-			if (data.details.type in itemDetailsParser) builder = itemDetailsParser[data.details.type](builder);
+			if (data.details?.unlock_type in itemUnlockParser) builder = itemUnlockParser[data.details.unlock_type](builder);
+			if (data.details?.type in itemDetailsParser) builder = itemDetailsParser[data.details.type](builder);
+
+			// edge cases
+			if (data.description === 'Objet recyclable') builder.type = 'objet recyclable';
+			else if (data.details?.guild_upgrade_id) builder.type = 'décoration';
+			else if (data.details?.flags[0] === 'Trinket') builder.type = 'bijou';
 
 			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
@@ -333,6 +347,8 @@
 			else if (data.flags.indexOf('AccountBindOnUse') !== -1) builder.boxLines.push('| lié = cu');
 			else if (data.flags.indexOf('SoulbindOnAcquire') !== -1) builder.boxLines.push('| lié = aa');
 			else if (data.flags.indexOf('SoulBindOnUse') !== -1) builder.boxLines.push('| lié = au');
+
+			if (data.flags.indexOf('Unique') !== -1) builder.boxLines.push('| unique = oui');
 
 			builder.body.push(...[
 				`{{Liste de modes d'acquisition}}`,
