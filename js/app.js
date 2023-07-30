@@ -58,6 +58,7 @@
 	const itemTypeParser = {
 		Trophy: (_) => {
 			_.type = 'trophée';
+			return _;
 		},
 		Armor: (_) => {
 			_.type = 'armure';
@@ -99,45 +100,54 @@
 					break;
 			}
 
-			return boxLines;
+			return _;
 		},
 		Back: (_) => {
 			_.type = 'dos';
 			_.boxType = 'accessoire';
+			return _;
 		},
 		Bag: (_) => {
 			_.type = 'sac';
+			return _;
 		},
 		Consumable: (_) => {
 			_.type = 'consommable';
 
 			if (_.data.name.startsWith('Coup de grâce')) _.type = 'coup de grâce';
 			else if (_.data.details.unlock_type === 'Ms') _.type = 'monture';
+			return _;
 		},
 		Container: (_) => {
 			_.type = 'conteneur';
 
 			_.body.push('== Contient ==');
 			_.body.push('{{...}}');
+			return _;
 		},
 		CraftingMaterial: (_) => {
 			_.type = 'matériau d\'artisanat';
 
 			if (_.data.name.startsWith('Insigne')) _.type = 'insigne';
 			else if (_.data.name.startsWith('Inscription')) _.type = 'inscription';
+			return _;
 		},
 		Gathering: (_) => {
 			_.type = 'outil de récolte';
+			return _;
 		},
 		Gizmo: (_) => {
 			_.type = 'gizmo';
+			return _;
 		},
 		MiniPet: (_) => {
 			_.type = 'miniature';
 			_.boxType = 'miniature';
+			return _;
 		},
 		Tool: (_) => {
 			_.type = 'outil de recyclage';
+			return _;
 		},
 		Trinket: (_) => {
 			_.type = 'colifichet';
@@ -154,9 +164,11 @@
 					_.type = 'accessoire';
 					break;
 			}
+			return _;
 		},
 		UpgradeComponent: (_) => {
 			_.type = 'amélioration';
+			return _;
 		},
 		Weapon: (_) => {
 			_.type = 'arme';
@@ -221,6 +233,7 @@
 					_.type = 'trident';
 					break;
 			}
+			return _;
 		},
 	};
 
@@ -228,19 +241,24 @@
 		CraftingRecipe: (_) => {
 			_.type = 'recette';
 			/* */
+			return _;
 		},
 		Outfit: (_) => {
 			_.type = 'tenue';
+			return _;
 		},
 		Dye: (_) => {
 			_.boxType = 'teinture';
 			/* */
+			return _;
 		},
 		GliderSkin: (_) => {
 			_.type = 'deltaplane';
+			return _;
 		},
 		Champion: (_) => {
 			_.type = 'champion des brumes';
+			return _;
 		},
 	};
 
@@ -251,32 +269,41 @@
 				_.boxType = 'amélioration';
 				/* */
 			}
+			return _;
 		},
 		Rune: (_) => {
 			_.type = 'rune';
 			_.boxType = 'amélioration';
+			return _;
 		},
 		Sigil: (_) => {
 			_.type = 'cachet';
 			_.boxType = 'amélioration';
+			return _;
 		},
 		Transmutation: (_) => {
 			_.type = 'apparence';
+			return _;
 		},
 		Immediate: (_) => {
 			_.type = 'services';
+			return _;
 		},
 		Utility: (_) => {
 			_.type = 'utilitaire';
+			return _;
 		},
 		Food: (_) => {
 			_.type = 'nourriture';
+			return _;
 		},
 		Gem: (_) => {
 			_.type = 'pierre précieuse';
+			return _;
 		},
 		Booze: (_) => {
 			_.type = 'alcool';
+			return _;
 		},
 	}
 
@@ -286,38 +313,46 @@
 				body = [],
 				boxType = 'objet',
 				type = false;
+			
+			let builder = {
+				type: false, 
+				boxType: 'object', 
+				data, 
+				body: [],
+				boxLines = []
+			};
 
-			if (data.type in itemTypeParser) boxLines = itemTypeParser[data.type]({type, boxType, data, body}) || [];
-			if (data.details.unlock_type in itemUnlockParser) boxLines.concat(itemUnlockParser[data.details.unlock_type]({type, boxType, data, body}) || []);
-			if (data.details.type in itemDetailsParser) boxLines.concat(itemDetailsParser[data.details.type]({type, boxType, data, body}) || []);
+			if (data.type in itemTypeParser) builder = itemTypeParser[data.type](builder) || [];
+			if (data.details.unlock_type in itemUnlockParser) builder = itemUnlockParser[data.details.unlock_type](builder);
+			if (data.details.type in itemDetailsParser) builder = itemDetailsParser[data.details.type](builder);
 
-			if (type) boxLines.splice(0, 0, `| type = ${type}`);
+			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
-			if (data.description) boxLines.push(`| description = ${data.description}`);
-			if (data.rarity) boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
-			if (data.level) boxLines.push(`| niveau = ${data.level}`);
-			if (data.vendor_value) boxLines.push(`| valeur = ${data.vendor_value}`);
+			if (data.description) builder.boxLines.push(`| description = ${data.description}`);
+			if (data.rarity) builder.boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
+			if (data.level) builder.boxLines.push(`| niveau = ${data.level}`);
+			if (data.vendor_value) builder.boxLines.push(`| valeur = ${data.vendor_value}`);
 
 			if (data.flags.indexOf('AccountBound') !== -1) {
-				boxLines.push('| lié = ca');
-				if (data.flags.indexOf('SoulBindOnUse') !== -1) boxLines.push('| lié2 = au');
+				builder.boxLines.push('| lié = ca');
+				if (data.flags.indexOf('SoulBindOnUse') !== -1) builder.boxLines.push('| lié2 = au');
 			}
-			else if (data.flags.indexOf('AccountBindOnUse') !== -1) boxLines.push('| lié = cu');
-			else if (data.flags.indexOf('SoulbindOnAcquire') !== -1) boxLines.push('| lié = aa');
-			else if (data.flags.indexOf('SoulBindOnUse') !== -1) boxLines.push('| lié = au');
+			else if (data.flags.indexOf('AccountBindOnUse') !== -1) builder.boxLines.push('| lié = cu');
+			else if (data.flags.indexOf('SoulbindOnAcquire') !== -1) builder.boxLines.push('| lié = aa');
+			else if (data.flags.indexOf('SoulBindOnUse') !== -1) builder.boxLines.push('| lié = au');
 
-			body.push(...[
+			builder.body.push(...[
 				`{{Liste de modes d'acquisition}}`,
 				`{{liste de recettes par ingrédient}}`,
 			])
 
 			return [
-				`{{Infobox ${boxType}`,
-				...boxLines,
+				`{{Infobox ${builder.boxType}`,
+				...builder.boxLines,
 				`| id = ${data.id}`,
 				`}}`,
 				``,
-				...body,
+				...builder.body,
 				``,
 			];
 		},
