@@ -64,8 +64,6 @@
 			_.type = 'armure';
 			_.boxType = 'armure';
 
-			boxLines = [];
-
 			switch (_.data.details.weight_class) {
 				case 'Heavy':
 					_.type = 'lourd';
@@ -80,23 +78,23 @@
 			
 			switch (_.data.details.type) {
 				case 'Boots':
-					boxLines.push('| emplacement = pieds');
+					_.boxLines.push('| emplacement = pieds');
 					break;
 				case 'Coat':
-					boxLines.push('| emplacement = torse');
+					_.boxLines.push('| emplacement = torse');
 					break;
 				case 'Gloves':
-					boxLines.push('| emplacement = mains');
+					_.boxLines.push('| emplacement = mains');
 					break;
 				case 'Helm':
 				case 'HelmAquatic':
-					boxLines.push('| emplacement = tête');
+					_.boxLines.push('| emplacement = tête');
 					break;
 				case 'Leggings':
-					boxLines.push('| emplacement = jambes');
+					_.boxLines.push('| emplacement = jambes');
 					break;
 				case 'Shoulders':
-					boxLines.push('| emplacement = épaules');
+					_.boxLines.push('| emplacement = épaules');
 					break;
 			}
 
