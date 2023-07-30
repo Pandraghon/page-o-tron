@@ -548,7 +548,7 @@
 				.then(res => res.json());
 			lines.push(...[
 				`| qté${i + 1} = ${recipe.ingredients[i].count}`,
-				`| mat${i + 1} = ingredient.name`
+				`| mat${i + 1} = ${ingredient.name}`
 			]);
 		}
 
