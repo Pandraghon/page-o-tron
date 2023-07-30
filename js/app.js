@@ -68,6 +68,14 @@
 			if (data.level) boxLines.push(`| niveau = ${data.level}`);
 			if (data.vendor_value) boxLines.push(`| valeur = ${data.vendor_value}`);
 
+			if (data.flags.indexOf('AccountBound') !== -1) {
+				boxLines.push('| lié = ca');
+				if (data.flags.indexOf('SoulBindOnUse') !== -1) boxLines.push('| lié2 = au');
+			}
+			else if (data.flags.indexOf('AccountBindOnUse') !== -1) boxLines.push('| lié = cu');
+			else if (data.flags.indexOf('SoulbindOnAcquire') !== -1) boxLines.push('| lié = aa');
+			else if (data.flags.indexOf('SoulBindOnUse') !== -1) boxLines.push('| lié = au');
+
 			body.push(...[
 				`{{Liste de modes d'acquisition}}`,
 				`{{liste de recettes par ingrédient}}`,
