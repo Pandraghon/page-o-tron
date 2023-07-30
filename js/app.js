@@ -22,9 +22,9 @@
 	};
 
 	const itemTypeMapping = {
-		Armor: '',
-		Back: '',
-		Bag: '',
+		Armor: 'armure',
+		Back: 'dos',
+		Bag: 'sac',
 		Consumable: '',
 		Container: 'Conteneur',
 		CraftingMaterial: '',
@@ -55,13 +55,243 @@
 		Unknown: 'Cantha'
 	};
 
+	const itemTypeParser = {
+		Trophy: (type, boxType, data, body) => {
+			type = 'trophée';
+		},
+		Armor: (type, boxType, data, body) => {
+			type = 'armure';
+			boxType = 'armure';
+
+			boxLines = [];
+
+			switch (data.details.weight_class) {
+				case 'Heavy':
+					type = 'lourd';
+					break;
+				case 'Medium':
+					type = 'intermédiaire';
+					break;
+				case 'Light':
+					type = 'léger';
+					break;
+			}
+			
+			switch (data.details.type) {
+				case 'Boots':
+					boxLines.push('| emplacement = pieds');
+					break;
+				case 'Coat':
+					boxLines.push('| emplacement = torse');
+					break;
+				case 'Gloves':
+					boxLines.push('| emplacement = mains');
+					break;
+				case 'Helm':
+				case 'HelmAquatic':
+					boxLines.push('| emplacement = tête');
+					break;
+				case 'Leggings':
+					boxLines.push('| emplacement = jambes');
+					break;
+				case 'Shoulders':
+					boxLines.push('| emplacement = épaules');
+					break;
+			}
+
+			return boxLines;
+		},
+		Back: (type, boxType, data, body) => {
+			type = 'dos';
+			boxType = 'accessoire';
+		},
+		Bag: (type, boxType, data, body) => {
+			type = 'sac';
+		},
+		Consumable: (type, boxType, data, body) => {
+			type = 'consommable';
+
+			if (data.name.startsWith('Coup de grâce')) type = 'coup de grâce';
+			else if (data.details.unlock_type === 'Ms') type = 'monture';
+		},
+		Container: (type, boxType, data, body) => {
+			type = 'conteneur';
+
+			body.push('== Contient ==');
+			body.push('{{...}}');
+		},
+		CraftingMaterial: (type, boxType, data, body) => {
+			type = 'matériau d\'artisanat';
+
+			if (data.name.startsWith('Insigne')) type = 'insigne';
+			else if (data.name.startsWith('Inscription')) type = 'inscription';
+		},
+		Gathering: (type, boxType, data, body) => {
+			type = 'outil de récolte';
+		},
+		Gizmo: (type, boxType, data, body) => {
+			type = 'gizmo';
+		},
+		MiniPet: (type, boxType, data, body) => {
+			type = 'miniature';
+			boxType = 'miniature';
+		},
+		Tool: (type, boxType, data, body) => {
+			type = 'outil de recyclage';
+		},
+		Trinket: (type, boxType, data, body) => {
+			type = 'colifichet';
+			boxType = 'accessoire';
+
+			switch (data.details) {
+				case 'Amulet':
+					type = 'amulette';
+					break;
+				case 'Ring':
+					type = 'anneau';
+					break;
+				case 'Accessory':
+					type = 'accessoire';
+					break;
+			}
+		},
+		UpgradeComponent: (type, boxType, data, body) => {
+			type = 'amélioration';
+		},
+		Weapon: (type, boxType, data, body) => {
+			type = 'arme';
+			boxType = 'arme';
+
+			switch (data.details.type) {
+				case 'Axe':
+					type = 'hache';
+					break;
+				case 'Dagger':
+					type = 'dague';
+					break;
+				case 'Mace':
+					type = 'masse';
+					break;
+				case 'Pistol':
+					type = 'pistolet';
+					break;
+				case 'Scepter':
+					type = 'sceptre';
+					break;
+				case 'Focus':
+					type = 'focus';
+					break;
+				case 'Shield':
+					type = 'bouclier';
+					break;
+				case 'Sword':
+					type = 'épée';
+					break;
+				case 'Torch':
+					type = 'torche';
+					break;
+				case 'Warhorn':
+					type = 'cor de guerre';
+					break;
+				case 'Greatsword':
+					type = 'espadon';
+					break;
+				case 'Hammer':
+					type = 'marteau';
+					break;
+				case 'LongBow':
+					type = 'arc long';
+					break;
+				case 'Rifle':
+					type = 'fusil';
+					break;
+				case 'ShortBow':
+					type = 'arc court';
+					break;
+				case 'Staff':
+					type = 'bâton';
+					break;
+				case 'Harpoon':
+					type = 'lance';
+					break;
+				case 'Speargun':
+					type = 'fusil-harpon';
+					break;
+				case 'Trident':
+					type = 'trident';
+					break;
+			}
+		},
+	};
+
+	const itemUnlockParser = {
+		CraftingRecipe: (type, boxType, data, body) => {
+			type = 'recette';
+			/* */
+		},
+		Outfit: (type, boxType, data, body) => {
+			type = 'tenue';
+		},
+		Dye: (type, boxType, data, body) => {
+			boxType = 'teinture';
+			/* */
+		},
+		GliderSkin: (type, boxType, data, body) => {
+			type = 'deltaplane';
+		},
+		Champion: (type, boxType, data, body) => {
+			type = 'champion des brumes';
+		},
+	};
+
+	const itemDetailsParser = {
+		Default: (type, boxType, data, body) => {
+			if (data.details.infusion_upgrade_flags) {
+				type = 'infusion';
+				boxType = 'amélioration';
+				/* */
+			}
+		},
+		Rune: (type, boxType, data, body) => {
+			type = 'rune';
+			boxType = 'amélioration';
+		},
+		Sigil: (type, boxType, data, body) => {
+			type = 'cachet';
+			boxType = 'amélioration';
+		},
+		Transmutation: (type, boxType, data, body) => {
+			type = 'apparence';
+		},
+		Immediate: (type, boxType, data, body) => {
+			type = 'services';
+		},
+		Utility: (type, boxType, data, body) => {
+			type = 'utilitaire';
+		},
+		Food: (type, boxType, data, body) => {
+			type = 'nourriture';
+		},
+		Gem: (type, boxType, data, body) => {
+			type = 'pierre précieuse';
+		},
+		Booze: (type, boxType, data, body) => {
+			type = 'alcool';
+		},
+	}
+
 	const categoryParser = {
 		items: async (data) => {
 			let boxLines = [],
 				body = [],
-				boxType = 'objet';
+				boxType = 'objet',
+				type = false;
 
-			if (data.type in itemBoxTypeMapping) boxType = itemBoxTypeMapping[data.type];
+			if (data.type in itemTypeParser) boxLines = itemTypeParser(type, boxType, data, body) || [];
+			if (data.details.unlock_type in itemUnlockParser) boxLines.concat(itemUnlockParser(data.details.unlock_type) || []);
+			if (data.details.type in itemDetailsParser) boxLines.concat(itemDetailsParser(data.details.type) || []);
+
+			if (type) boxLines.splice(0, 0, `| type = ${type}`);
 
 			if (data.description) boxLines.push(`| description = ${data.description}`);
 			if (data.rarity) boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
