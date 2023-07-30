@@ -306,15 +306,10 @@
 	}
 
 	const categoryParser = {
-		items: async (data) => {
-			let boxLines = [],
-				body = [],
-				boxType = 'objet',
-				type = false;
-			
+		items: async (data) => {			
 			let builder = {
 				type: false, 
-				boxType: 'object', 
+				boxType: 'objet', 
 				data, 
 				body: [],
 				boxLines: []
