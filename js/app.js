@@ -287,9 +287,9 @@
 				boxType = 'objet',
 				type = false;
 
-			if (data.type in itemTypeParser) boxLines = itemTypeParser(type, boxType, data, body) || [];
-			if (data.details.unlock_type in itemUnlockParser) boxLines.concat(itemUnlockParser(data.details.unlock_type) || []);
-			if (data.details.type in itemDetailsParser) boxLines.concat(itemDetailsParser(data.details.type) || []);
+			if (data.type in itemTypeParser) boxLines = itemTypeParser[data.type](type, boxType, data, body) || [];
+			if (data.details.unlock_type in itemUnlockParser) boxLines.concat(itemUnlockParser[data.details.unlock_type](type, boxType, data, body) || []);
+			if (data.details.type in itemDetailsParser) boxLines.concat(itemDetailsParser[data.details.type](type, boxType, data, body) || []);
 
 			if (type) boxLines.splice(0, 0, `| type = ${type}`);
 
