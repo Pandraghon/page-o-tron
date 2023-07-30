@@ -56,10 +56,10 @@
 	};
 
 	const itemTypeParser = {
-		Trophy: (type, boxType, data, body) => {
+		Trophy: ({type}) => {
 			type = 'trophée';
 		},
-		Armor: (type, boxType, data, body) => {
+		Armor: ({type, boxType, data}) => {
 			type = 'armure';
 			boxType = 'armure';
 
@@ -101,45 +101,45 @@
 
 			return boxLines;
 		},
-		Back: (type, boxType, data, body) => {
+		Back: ({type, boxType}) => {
 			type = 'dos';
 			boxType = 'accessoire';
 		},
-		Bag: (type, boxType, data, body) => {
+		Bag: ({type}) => {
 			type = 'sac';
 		},
-		Consumable: (type, boxType, data, body) => {
+		Consumable: ({type, data}) => {
 			type = 'consommable';
 
 			if (data.name.startsWith('Coup de grâce')) type = 'coup de grâce';
 			else if (data.details.unlock_type === 'Ms') type = 'monture';
 		},
-		Container: (type, boxType, data, body) => {
+		Container: ({type, body}) => {
 			type = 'conteneur';
 
 			body.push('== Contient ==');
 			body.push('{{...}}');
 		},
-		CraftingMaterial: (type, boxType, data, body) => {
+		CraftingMaterial: ({type, data}) => {
 			type = 'matériau d\'artisanat';
 
 			if (data.name.startsWith('Insigne')) type = 'insigne';
 			else if (data.name.startsWith('Inscription')) type = 'inscription';
 		},
-		Gathering: (type, boxType, data, body) => {
+		Gathering: ({type}) => {
 			type = 'outil de récolte';
 		},
-		Gizmo: (type, boxType, data, body) => {
+		Gizmo: ({type}) => {
 			type = 'gizmo';
 		},
-		MiniPet: (type, boxType, data, body) => {
+		MiniPet: ({type, boxType}) => {
 			type = 'miniature';
 			boxType = 'miniature';
 		},
-		Tool: (type, boxType, data, body) => {
+		Tool: ({type}) => {
 			type = 'outil de recyclage';
 		},
-		Trinket: (type, boxType, data, body) => {
+		Trinket: ({type, boxType, data}) => {
 			type = 'colifichet';
 			boxType = 'accessoire';
 
@@ -155,10 +155,10 @@
 					break;
 			}
 		},
-		UpgradeComponent: (type, boxType, data, body) => {
+		UpgradeComponent: ({type}) => {
 			type = 'amélioration';
 		},
-		Weapon: (type, boxType, data, body) => {
+		Weapon: ({type, boxType, data}) => {
 			type = 'arme';
 			boxType = 'arme';
 
@@ -225,57 +225,57 @@
 	};
 
 	const itemUnlockParser = {
-		CraftingRecipe: (type, boxType, data, body) => {
+		CraftingRecipe: ({type, boxType, data, body}) => {
 			type = 'recette';
 			/* */
 		},
-		Outfit: (type, boxType, data, body) => {
+		Outfit: ({type, boxType, data, body}) => {
 			type = 'tenue';
 		},
-		Dye: (type, boxType, data, body) => {
+		Dye: ({type, boxType, data, body}) => {
 			boxType = 'teinture';
 			/* */
 		},
-		GliderSkin: (type, boxType, data, body) => {
+		GliderSkin: ({type, boxType, data, body}) => {
 			type = 'deltaplane';
 		},
-		Champion: (type, boxType, data, body) => {
+		Champion: ({type, boxType, data, body}) => {
 			type = 'champion des brumes';
 		},
 	};
 
 	const itemDetailsParser = {
-		Default: (type, boxType, data, body) => {
+		Default: ({type, boxType, data, body}) => {
 			if (data.details.infusion_upgrade_flags) {
 				type = 'infusion';
 				boxType = 'amélioration';
 				/* */
 			}
 		},
-		Rune: (type, boxType, data, body) => {
+		Rune: ({type, boxType, data, body}) => {
 			type = 'rune';
 			boxType = 'amélioration';
 		},
-		Sigil: (type, boxType, data, body) => {
+		Sigil: ({type, boxType, data, body}) => {
 			type = 'cachet';
 			boxType = 'amélioration';
 		},
-		Transmutation: (type, boxType, data, body) => {
+		Transmutation: ({type, boxType, data, body}) => {
 			type = 'apparence';
 		},
-		Immediate: (type, boxType, data, body) => {
+		Immediate: ({type, boxType, data, body}) => {
 			type = 'services';
 		},
-		Utility: (type, boxType, data, body) => {
+		Utility: ({type, boxType, data, body}) => {
 			type = 'utilitaire';
 		},
-		Food: (type, boxType, data, body) => {
+		Food: ({type, boxType, data, body}) => {
 			type = 'nourriture';
 		},
-		Gem: (type, boxType, data, body) => {
+		Gem: ({type, boxType, data, body}) => {
 			type = 'pierre précieuse';
 		},
-		Booze: (type, boxType, data, body) => {
+		Booze: ({type, boxType, data, body}) => {
 			type = 'alcool';
 		},
 	}
@@ -287,9 +287,9 @@
 				boxType = 'objet',
 				type = false;
 
-			if (data.type in itemTypeParser) boxLines = itemTypeParser[data.type](type, boxType, data, body) || [];
-			if (data.details.unlock_type in itemUnlockParser) boxLines.concat(itemUnlockParser[data.details.unlock_type](type, boxType, data, body) || []);
-			if (data.details.type in itemDetailsParser) boxLines.concat(itemDetailsParser[data.details.type](type, boxType, data, body) || []);
+			if (data.type in itemTypeParser) boxLines = itemTypeParser[data.type]({type, boxType, data, body}) || [];
+			if (data.details.unlock_type in itemUnlockParser) boxLines.concat(itemUnlockParser[data.details.unlock_type]({type, boxType, data, body}) || []);
+			if (data.details.type in itemDetailsParser) boxLines.concat(itemDetailsParser[data.details.type]({type, boxType, data, body}) || []);
 
 			if (type) boxLines.splice(0, 0, `| type = ${type}`);
 
