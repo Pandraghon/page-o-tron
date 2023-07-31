@@ -21,7 +21,7 @@
 		Legendary: 'légendaire'
 	};
 
-	const professionMapping = {
+	const disciplineMapping = {
 		Artificier: 'artificier',
 		Armorsmith: 'forgeron d\'armures',
 		Chef: 'maître-queux',
@@ -31,6 +31,18 @@
 		Tailor: 'tailleur',
 		Weaponsmith: 'forgeron d\'armes',
 		Scribe: 'illustrateur',
+	};
+
+	const professionMapping = {
+		Elementalist: 'élémentaliste',
+		Engineer: 'ingénieur',
+		Guardian: 'gardien',
+		Mesmer: 'envoûteur',
+		Necromancer: 'nécromant',
+		Ranger: 'rôdeur',
+		Revenant: 'revenant',
+		Thief: 'voleur',
+		Warrior: 'guerrier',
 	};
 
 	const itemTypeMapping = {
@@ -66,6 +78,19 @@
 		Cantha: 'Cantha',
 		Unknown: 'Cantha'
 	};
+
+	const skillTypeMapping = {
+		Bundle: 'environnemental',
+		Elite: 'élite',
+		Heal: 'soins',
+		Monster: '',
+		Pet: 'familier',
+		Profession: 'profession',
+		Toolbelt: 'mécanisme',
+		Transform: 'transformation',
+		Utility: 'utilitaire',
+		Weapon: 'arme',
+	}
 
 	const recipeTypeMapping = {
 		Axe: 'hache',
@@ -565,7 +590,7 @@
 		}
 
 		for (let i = 0, imax = recipe.disciplines.length ; i < imax ; i++) {
-			lines.push(`| discipline${i > 0 ? i + 1 : ''} = ${professionMapping[recipe.disciplines[i]]}`);
+			lines.push(`| discipline${i > 0 ? i + 1 : ''} = ${disciplineMapping[recipe.disciplines[i]]}`);
 		}
 
 		lines.push(...[
@@ -733,7 +758,29 @@
 			const { achievements } = data;
 			const achievementsData = await fetch(`https://api.guildwars2.com/v2/achievements?ids=${achievements.join(',')}&lang=fr`).then(res => res.json());
 			return [`${data.name} - Obtenu en terminant le(s) succès ${achievementsData.map(a => a.name).join(', ')}`];
-		}
+		},
+		skills: async (data) => {
+			const lines = [];
+
+			if (data.professions?.length !== 8) {
+				lines.push(...data.professions.map(prof => `| profession = ${professionMapping[prof]}`));
+			}
+
+			if (data.type in skillTypeMapping) lines.push(`| emplacement = ${skillTypeMapping[data.type]}`);
+
+			if (data.slot) {
+
+			}
+
+			if (data.cost) lines.push(`| énergie = ${data.cost}`);
+			if (data.initiative) lines.push(`| initiative = ${data.initiative}`);
+
+			return [
+				'{{Infobox compétence',
+				...lines,
+				'}}'
+			];
+		},
 	};
 
 	categoriesSelect.addEventListener('change', () => {
