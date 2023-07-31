@@ -762,9 +762,8 @@
 		skills: async (data) => {
 			const lines = [];
 
-			if (data.professions?.length !== 8) {
-				lines.push(...data.professions.map(prof => `| profession = ${professionMapping[prof]}`));
-			}
+			if (data.professions?.length === 8) lines.push(`| profession = commun`);
+			else lines.push(...data.professions.map(prof => `| profession = ${professionMapping[prof]}`));
 
 			if (data.type in skillTypeMapping) lines.push(`| emplacement = ${skillTypeMapping[data.type]}`);
 
