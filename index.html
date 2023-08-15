@@ -52,9 +52,16 @@
 		<div id="wikiAlert" class="alert alert-success" hidden>
 			Vous pouvez copier le code et créer la page sur le wiki en suivant ce lien : <a href="http://" target="_blank" id="wiki" rel="noopener noreferrer"></a>
 		</div>
-		<div class="form-floating">
-			<textarea class="form-control" name="code" id="code" rows="25" style="height: 500px;"></textarea>
-			<label for="code">Page générée</label>
+		<div class="d-flex">
+			<div class="form-floating flex-grow-1">
+				<textarea class="form-control" name="code" id="code" rows="25" style="height: 500px;"></textarea>
+				<label for="code">Page générée</label>
+			</div>
+			<button class="btn btn-primary" type="button" id="existing-button" data-bs-toggle="collapse" data-bs-target="#existing-page" aria-expanded="false" aria-controls="existing-page">Page existante</button>
+			<div class="form-floating flex-grow-1 collapse collapse-horizontal" id="existing-page">
+				<textarea class="form-control" name="existing" id="existing" rows="25" style="height: 500px;"></textarea>
+				<label for="code">Page existante</label>
+			</div>
 		</div>
 	</div>
 	<div class="container">

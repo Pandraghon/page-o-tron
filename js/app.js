@@ -5,6 +5,8 @@
 	const entryInput = document.getElementById('entry');
 	const debugTextarea = document.getElementById('debug');
 	const codeTextarea = document.getElementById('code');
+	const existingTextarea = document.getElementById('existing');
+	const existingButton = document.getElementById('existing-button');
 	const pageTitle = document.getElementById('pageTitle');
 	const copyButton = document.getElementById('copy');
 	const wikiLink = document.getElementById('wiki');
@@ -800,6 +802,7 @@
 					frag.append(option);
 				}
 				codeTextarea.value = '';
+				existingTextarea.value = '';
 				entryInput.value = '';
 				entriesDatalist.append(frag);
 			})
@@ -817,6 +820,7 @@
 		} else if (/^\[\d+\] .*$/.test(entry)) {
 			entry = entry.match(/^\[(\d+)\] .*$/)[1];
 		}
+		existingTextarea.value = '';
 		fetch(`https://api.guildwars2.com/v2/${category}/${entry}?lang=fr`)
 			.then(res => res.json())
 			.then(async res => {
@@ -830,6 +834,19 @@
 				wikiLink.innerText = res.name;
 				copyButton.classList.remove('btn-success');
 				copyButton.classList.add('btn-primary');
+				try {
+					fetch(`https://wiki-fr.guildwars2.com/api.php?action=query&format=json&prop=revisions&titles=${res.name}&rvprop=ids%7Ctimestamp%7Cflags%7Ccomment%7Cuser%7Ccontent`)
+						.then(res => res.json())
+						.then(res => {
+							const existingPages = res?.query?.pages;
+							if (!pages) return;
+							const existingContent = Object.values(existingPages)[0].revisions[0]['*'];
+							existingTextarea.value = existingContent;
+						})
+						.catch(console.error);
+				} catch (e) {
+					console.error(e);
+				}
 				const generatedText = await categoryParser[sanitizedCategory](res);
 				for (let interLang of ['de', 'en', 'es']) {
 					await fetch(`https://api.guildwars2.com/v2/${category}/${entry}?lang=${interLang}`)
