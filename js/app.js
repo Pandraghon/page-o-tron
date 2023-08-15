@@ -835,7 +835,7 @@
 				copyButton.classList.remove('btn-success');
 				copyButton.classList.add('btn-primary');
 				try {
-					fetch(`https://wiki-fr.guildwars2.com/api.php?action=query&format=json&prop=revisions&titles=${res.name}&rvprop=ids%7Ctimestamp%7Cflags%7Ccomment%7Cuser%7Ccontent`)
+					fetch(`https://wiki-fr.guildwars2.com/api.php?action=query&format=json&origin=*&prop=revisions&titles=${res.name}&rvprop=ids%7Ctimestamp%7Cflags%7Ccomment%7Cuser%7Ccontent`)
 						.then(res => res.json())
 						.then(res => {
 							const existingPages = res?.query?.pages;
