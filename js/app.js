@@ -839,7 +839,7 @@
 						.then(res => res.json())
 						.then(res => {
 							const existingPages = res?.query?.pages;
-							if (!pages) return;
+							if (!existingPages) return;
 							const existingContent = Object.values(existingPages)[0].revisions[0]['*'];
 							existingTextarea.value = existingContent;
 						})
