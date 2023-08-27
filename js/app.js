@@ -398,7 +398,8 @@
 			return _;
 		},
 		Mwcc: (_) => {
-			_.type = 'amélioration';
+			_.type = 'relique';
+			_.boxType = 'amélioration';
 			return _;
 		},
 		Tool: (_) => {
