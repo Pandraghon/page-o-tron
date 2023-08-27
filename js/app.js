@@ -394,6 +394,10 @@
 			_.boxType = 'miniature';
 			return _;
 		},
+		Mwcc: (_) => {
+			_.type = 'amélioration';
+			return _;
+		},
 		Tool: (_) => {
 			_.type = 'outil de recyclage';
 			return _;
