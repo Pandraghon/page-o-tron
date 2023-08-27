@@ -3,6 +3,9 @@
 	const categoriesSelect = document.getElementById('category');
 	const entriesDatalist = document.getElementById('entries');
 	const entryInput = document.getElementById('entry');
+	const iconInput = document.getElementById('icon-url');
+	const iconImg = document.getElementById('icon');
+	const iconContainer = document.getElementById('icon-container');
 	const debugTextarea = document.getElementById('debug');
 	const codeTextarea = document.getElementById('code');
 	const existingTextarea = document.getElementById('existing');
@@ -825,6 +828,8 @@
 			entry = entry.match(/^\[(\d+)\] .*$/)[1];
 		}
 		existingTextarea.value = '';
+		iconInput.value = '';
+		iconContainer.hidden = true;
 		fetch(`https://api.guildwars2.com/v2/${category}/${entry}?lang=fr`)
 			.then(res => res.json())
 			.then(async res => {
@@ -838,6 +843,12 @@
 				wikiLink.innerText = res.name;
 				copyButton.classList.remove('btn-success');
 				copyButton.classList.add('btn-primary');
+				if (res.icon) {
+					iconInput.value = res.icon;
+					iconImg.src = res.icon;
+					iconImg.alt = res.name;
+					iconContainer.hidden = false;
+				}
 				try {
 					fetch(`https://wiki-fr.guildwars2.com/api.php?action=query&format=json&origin=*&prop=revisions&titles=${res.name}&rvprop=ids%7Ctimestamp%7Cflags%7Ccomment%7Cuser%7Ccontent`)
 						.then(res => res.json())
