@@ -16,70 +16,80 @@
 	    <h1>Page-o-tron</h1>
 	  </header>
 
-	<form action="#" class="container mb-4">
-		<div class="form-floating">
-			<select class="form-select" name="category" id="category">
-				<option value="achievements">Succès</option>
-				<option value="achievements_categories">Catégories de succès</option>
-				<option value="masteries">Maîtrises</option>
-				<option value="titles">Titres</option>
-				<option value="items" selected>Objets</option>
-				<option value="minis">Miniatures</option>
-				<option value="mounts">Montures</option>
-				<option value="quests">Quêtes</option>
-				<option value="recipes">Recettes</option>
-				<option value="skills">Compétences</option>
-				<option value="skins">Apparences</option>
-			</select>
-			<label for="category">Catégories</label>
+	  <main>
+		<form action="#" class="container mb-4">
+			<div class="form-floating">
+				<select class="form-select" name="category" id="category">
+					<option value="achievements">Succès</option>
+					<option value="achievements_categories">Catégories de succès</option>
+					<option value="masteries">Maîtrises</option>
+					<option value="titles">Titres</option>
+					<option value="items" selected>Objets</option>
+					<option value="minis">Miniatures</option>
+					<option value="mounts">Montures</option>
+					<option value="quests">Quêtes</option>
+					<option value="recipes">Recettes</option>
+					<option value="skills">Compétences</option>
+					<option value="skins">Apparences</option>
+				</select>
+				<label for="category">Catégories</label>
+			</div>
+
+			<div class="input-group">
+				<div class="form-floating">
+					<input type="search" class="form-control" name="entry" id="entry" list="entries" autocomplete="off"/>
+					<label for="entry">ID</label>
+					<datalist id="entries"></datalist>
+				</div>
+				<button class="btn btn-primary" type="submit">Générer</button>
+			</div>
+		</form>
+
+		<div class="container">
+			<div class="d-inline-flex align-items-center">
+				<h2 id="pageTitle" class="me-2"></h2>
+				<button type="button" id="copy" class="btn btn-primary me-2" hidden>Copier le code</button>
+			</div>
+			<div id="wikiAlert" class="alert alert-success" hidden>
+				Vous pouvez copier le code et créer la page sur le wiki en suivant ce lien : <a href="http://" target="_blank" id="wiki" rel="noopener noreferrer"></a>
+			</div>
+			<div class="d-flex" id="icon-container" hidden>
+				<img id="icon">
+				<div class="form-floating flex-grow-1">
+					<input type="text" class="form-control" name="icon-url" id="icon-url"/>
+					<label for="entry">Icône</label>
+				</div>
+			</div>
+			<div class="d-flex">
+				<div class="form-floating flex-grow-1">
+					<textarea class="form-control" name="code" id="code" rows="25" style="height: 500px;"></textarea>
+					<label for="code">Page générée</label>
+				</div>
+				<button class="btn btn-primary" type="button" id="existing-button" data-bs-toggle="collapse" data-bs-target="#existing-page" aria-expanded="false" aria-controls="existing-page">Page existante</button>
+				<div class="form-floating flex-grow-1 collapse collapse-horizontal" id="existing-page">
+					<textarea class="form-control" name="existing" id="existing" rows="25" style="height: 500px;"></textarea>
+					<label for="code">Page existante</label>
+				</div>
+			</div>
 		</div>
 
-		<div class="input-group">
-			<div class="form-floating">
-				<input type="search" class="form-control" name="entry" id="entry" list="entries" autocomplete="off"/>
-				<label for="entry">ID</label>
-				<datalist id="entries"></datalist>
-			</div>
-			<button class="btn btn-primary" type="submit">Générer</button>
+		<div class="container">
+			<details>
+				<summary>Debug log</summary>
+				<div class="form-floating">
+					<textarea class="form-control" name="debug" id="debug" style="height: 250px;"></textarea>
+					<label for="debug">Debug</label>
+				</div>
+			</details>
 		</div>
-	</form>
+	  </main>
 
-	<div class="container">
-		<div class="d-inline-flex align-items-center">
-			<h2 id="pageTitle" class="me-2"></h2>
-			<button type="button" id="copy" class="btn btn-primary me-2" hidden>Copier le code</button>
-		</div>
-		<div id="wikiAlert" class="alert alert-success" hidden>
-			Vous pouvez copier le code et créer la page sur le wiki en suivant ce lien : <a href="http://" target="_blank" id="wiki" rel="noopener noreferrer"></a>
-		</div>
-		<div class="d-flex" id="icon-container" hidden>
-			<img id="icon">
-			<div class="form-floating flex-grow-1">
-				<input type="text" class="form-control" name="icon-url" id="icon-url"/>
-				<label for="entry">Icône</label>
-			</div>
-		</div>
-		<div class="d-flex">
-			<div class="form-floating flex-grow-1">
-				<textarea class="form-control" name="code" id="code" rows="25" style="height: 500px;"></textarea>
-				<label for="code">Page générée</label>
-			</div>
-			<button class="btn btn-primary" type="button" id="existing-button" data-bs-toggle="collapse" data-bs-target="#existing-page" aria-expanded="false" aria-controls="existing-page">Page existante</button>
-			<div class="form-floating flex-grow-1 collapse collapse-horizontal" id="existing-page">
-				<textarea class="form-control" name="existing" id="existing" rows="25" style="height: 500px;"></textarea>
-				<label for="code">Page existante</label>
-			</div>
-		</div>
-	</div>
-	<div class="container">
-		<details>
-			<summary>Debug log</summary>
-			<div class="form-floating">
-				<textarea class="form-control" name="debug" id="debug" style="height: 250px;"></textarea>
-				<label for="debug">Debug</label>
-			</div>
-		</details>
-	</div>
+	  <footer>
+		<p>Créé par Pandraghon</p>
+		<p>Inspiré du <a href="http://karaknor.alwaysdata.net/" target="_blank">générateur de page de Karaknor</a></p>
+		<p>Le code de Page-o-tron est opensource et ouvert aux contributions sur <a href="https://github.com/Pandraghon/page-o-tron">Github</a></p>
+	  </footer>
+
     <script src="js/bootstrap.min.js"></script>
     <script src="js/app.js"></script>
   </body>
