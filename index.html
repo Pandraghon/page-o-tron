@@ -67,11 +67,12 @@
 				</div>
 			</div>
 			<div class="d-flex">
-				<div class="form-floating flex-grow-1">
+				<div class="form-floating flex-grow-1" style="position: relative;">
 					<textarea class="form-control" name="code" id="code" rows="25" style="height: 500px;"></textarea>
 					<label for="code">Page générée</label>
+					<button class="btn btn-primary" type="button" id="existing-button" data-bs-toggle="collapse" data-bs-target="#existing-page" 
+					aria-expanded="false" aria-controls="existing-page" style="position: absolute;top: 0;right: 0;">Page<br>existante</button>
 				</div>
-				<button class="btn btn-primary align-self-start" type="button" id="existing-button" data-bs-toggle="collapse" data-bs-target="#existing-page" aria-expanded="false" aria-controls="existing-page">Page<br>existante</button>
 				<div class="form-floating flex-grow-1 collapse collapse-horizontal" id="existing-page">
 					<textarea class="form-control" name="existing" id="existing" rows="25" style="height: 500px;"></textarea>
 					<label for="code">Page existante</label>
