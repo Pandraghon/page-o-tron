@@ -15,6 +15,13 @@
 	const wikiLink = document.getElementById('wiki');
 	const wikiAlert = document.getElementById('wikiAlert');
 
+	const wikiFormat = (text) => text
+		.replace(/<c=@?reminder>/gi,'{{texte coloré|gris|')
+		.replace(/<c=@?warning>/gi,'{{texte coloré|rouge|')
+		.replace(/<c=@?abilitytype>/gi,'{{texte coloré|jaune|')
+		.replace(/<c=@?flavor>/gi,'{{texte coloré|bleu|')
+		.replace(/<\/?c>/g,'}}');
+
 	const rarityMapping = {
 		Junk: 'inutile',
 		Basic: 'commun',
@@ -638,7 +645,7 @@
 
 			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
-			if (data.description) builder.boxLines.push(`| description = ${data.description}`);
+			if (data.description) builder.boxLines.push(`| description = ${wikiFormat(data.description)}`);
 			if (data.rarity) builder.boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
 			if (data.level) builder.boxLines.push(`| niveau = ${data.level}`);
 			if (data.vendor_value) builder.boxLines.push(`| valeur = ${data.vendor_value}`);
