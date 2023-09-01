@@ -831,6 +831,7 @@
 		existingTextarea.value = '';
 		iconInput.value = '';
 		iconContainer.hidden = true;
+		existingButton.hidden = true;
 		fetch(`https://api.guildwars2.com/v2/${category}/${entry}?lang=fr`)
 			.then(res => res.json())
 			.then(async res => {
@@ -858,6 +859,7 @@
 							if (!existingPages) return;
 							const existingContent = Object.values(existingPages)[0].revisions[0]['*'];
 							existingTextarea.value = existingContent;
+							existingButton.hidden = false;
 						})
 						.catch(console.error);
 				} catch (e) {
