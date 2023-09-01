@@ -10,6 +10,7 @@
 	const codeTextarea = document.getElementById('code');
 	const existingTextarea = document.getElementById('existing');
 	const existingButton = document.getElementById('existing-button');
+	const existingPage = document.getElementById('existing-page');
 	const pageTitle = document.getElementById('pageTitle');
 	const copyButton = document.getElementById('copy');
 	const wikiLink = document.getElementById('wiki');
@@ -839,6 +840,7 @@
 		iconInput.value = '';
 		iconContainer.hidden = true;
 		existingButton.hidden = true;
+		existingPage.classList.toggle('show', false);
 		fetch(`https://api.guildwars2.com/v2/${category}/${entry}?lang=fr`)
 			.then(res => res.json())
 			.then(async res => {
