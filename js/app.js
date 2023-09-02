@@ -23,12 +23,14 @@
 		.replace(/<c=@?flavor>/gi,'{{texte coloré|bleu|')
 		.replace(/<\/?c>/g,'}}');
 
+	const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
+
 	const itemstatMapping = {};
 	const getItemstat = async (statID) => {
 		if (!(statID in itemstatMapping)) {
 			const stat = await fetch(`https://api.guildwars2.com/v2/itemstats/${statID}?lang=fr`)
 				.then(res => res.json());
-			itemstatMapping[statID] = stat.name;
+			itemstatMapping[statID] = capitalize(stat.name);
 		}
 		return itemstatMapping[statID];
 	};
