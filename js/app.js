@@ -23,6 +23,16 @@
 		.replace(/<c=@?flavor>/gi,'{{texte coloré|bleu|')
 		.replace(/<\/?c>/g,'}}');
 
+	const itemstatMapping = {};
+	const getItemstat = async (statID) => {
+		if (!(statID in itemstatMapping)) {
+			const stat = await fetch(`https://api.guildwars2.com/v2/itemstats/${statID}?lang=fr`)
+				.then(res => res.json());
+			itemstatMapping[statID] = stat.name;
+		}
+		return itemstatMapping[statID];
+	};
+
 	const rarityMapping = {
 		Junk: 'inutile',
 		Basic: 'commun',
@@ -646,6 +656,7 @@
 
 			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
+			if (data.details?.infix_upgrade) builder.boxLines.push(`| statistique = ${await getItemstat(data.details.infix_upgrade.id)}`);
 			if (data.description) builder.boxLines.push(`| description = ${wikiFormat(data.description)}`);
 			if (data.rarity) builder.boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
 			if (data.level) builder.boxLines.push(`| niveau = ${data.level}`);
