@@ -659,6 +659,21 @@
 			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
 			if (data.details?.infix_upgrade) builder.boxLines.push(`| statistique = ${await getItemstat(data.details.infix_upgrade.id)}`);
+			else if (data.details?.stat_choices) builder.boxLines.push('| statistiques = multiple');
+
+			if (data.details?.infusion_slots) {
+				let infusion = 0;
+				for (let slot of infusion_slots) {
+					if (slot.flags.indexOf('Infusion') !== -1) {
+						++infusion;
+						builder.boxLines.push(`| infusion${infusion > 1 ? infusion : ''} = vide`);
+					}
+					if (slot.flags.indexOf('Enrichment') !== -1) {
+						builder.boxLines.push(`| enrichissement = vide`);
+					}
+				}
+			}
+
 			if (data.description) builder.boxLines.push(`| description = ${wikiFormat(data.description)}`);
 			if (data.rarity) builder.boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
 			if (data.level) builder.boxLines.push(`| niveau = ${data.level}`);
