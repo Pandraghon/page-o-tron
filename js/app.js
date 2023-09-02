@@ -663,7 +663,7 @@
 
 			if (data.details?.infusion_slots) {
 				let infusion = 0;
-				for (let slot of infusion_slots) {
+				for (let slot of data.details.infusion_slots) {
 					if (slot.flags.indexOf('Infusion') !== -1) {
 						++infusion;
 						builder.boxLines.push(`| infusion${infusion > 1 ? infusion : ''} = vide`);
