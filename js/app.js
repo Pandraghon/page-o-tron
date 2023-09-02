@@ -430,7 +430,7 @@
 			_.type = 'colifichet';
 			_.boxType = 'accessoire';
 
-			switch (_.data.details) {
+			switch (_.data.details?.type) {
 				case 'Amulet':
 					_.type = 'amulette';
 					break;
