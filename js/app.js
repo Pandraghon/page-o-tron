@@ -53,7 +53,7 @@
 	};
 
 	const disciplineMapping = {
-		Artificier: 'artificier',
+		Artificer: 'artificier',
 		Armorsmith: 'forgeron d\'armures',
 		Chef: 'maître-queux',
 		Huntsman: 'chasseur',
