@@ -665,8 +665,10 @@
 			if (builder.type) builder.boxLines.splice(0, 0, `| type = ${builder.type}`);
 
 			if (data.description) builder.boxLines.push(`| description = ${wikiFormat(data.description)}`);
-			if (data.details?.infix_upgrade) builder.boxLines.push(`| statistique = ${await getItemstat(data.details.infix_upgrade.id)}`);
+			if (data.details?.infix_upgrade && !data.details?.infix_upgrade?.buff) builder.boxLines.push(`| statistique = ${await getItemstat(data.details.infix_upgrade.id)}`);
 			else if (data.details?.stat_choices) builder.boxLines.push('| statistiques = multiple');
+
+			if (data.details?.infix_upgrade?.buff) builder.boxLines.push(`| effet1 = ${wikiFormat(data.details.infix_upgrade.buff.description)}`);
 
 			if (data.details?.infusion_slots) {
 				let infusion = 0;
