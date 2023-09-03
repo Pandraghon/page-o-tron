@@ -30,7 +30,7 @@
 		if (!(statID in itemstatMapping)) {
 			const stat = await fetch(`https://api.guildwars2.com/v2/itemstats/${statID}?lang=fr`)
 				.then(res => res.json());
-			itemstatMapping[statID] = capitalize(stat.name);
+			itemstatMapping[statID] = capitalize(stat.name || '');
 		}
 		return itemstatMapping[statID];
 	};
