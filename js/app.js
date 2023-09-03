@@ -35,6 +35,12 @@
 		return itemstatMapping[statID];
 	};
 
+	const getSkin = async (skinID) => {
+		const skin = await fetch(`https://api.guildwars2.com/v2/skins/${skinID}?lang=fr`)
+			.then(res => res.json());
+		return skin.name;
+	}
+
 	const rarityMapping = {
 		Junk: 'inutile',
 		Basic: 'commun',
@@ -675,6 +681,7 @@
 				}
 			}
 
+			if (data.default_skin) builder.boxLines.push(`| apparence par défaut = ${await getSkin(data.default_skin)}`);
 			if (data.rarity) builder.boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
 			if (data.level) builder.boxLines.push(`| niveau = ${data.level}`);
 			if (data.vendor_value) builder.boxLines.push(`| valeur = ${data.vendor_value}`);
