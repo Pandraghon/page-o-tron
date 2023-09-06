@@ -701,8 +701,15 @@
 			const recipes = await fetch(`https://api.guildwars2.com/v2/recipes/search?output=${data.id}`)
 				.then(res => res.json());
 
+			builder.body.push(...[
+				`{{Liste de modes d'acquisition}}`,
+			])
+
 			if (recipes && recipes.length) {
-				builder.body.push('== Recette ==');
+				builder.body.push(...[
+					'',
+					'== Recette =='
+				]);
 				for (let recipeId of recipes) {
 					const recipe = await fetch(`https://api.guildwars2.com/v2/recipes/${recipeId}`)
 						.then(res => res.json());
@@ -711,7 +718,6 @@
 			}
 
 			builder.body.push(...[
-				`{{Liste de modes d'acquisition}}`,
 				`{{liste de recettes par ingrédient}}`,
 			])
 
