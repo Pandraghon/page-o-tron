@@ -423,7 +423,7 @@
 			_.boxType = 'miniature';
 			return _;
 		},
-		Mwcc: (_) => {
+		Relic: (_) => {
 			_.type = 'relique';
 			_.boxType = 'amélioration';
 			return _;
