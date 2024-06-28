@@ -706,6 +706,7 @@
 
             if (recipes && recipes.length) {
 				builder.body.push(...[
+					'== Acquisition ==',
 					`{{liste de modes d'acquisition|titre = non}}`,
 					'',
 					'=== Recette ==='
