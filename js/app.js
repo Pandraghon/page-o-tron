@@ -123,7 +123,7 @@
 		Weapon: 'arme',
 	}
 
-	const recipeTypeMapping = {
+	const TypeMapping = {
 		Axe: 'hache',
 		Dagger: 'dague',
 		Focus: 'focus',
@@ -634,7 +634,7 @@
 		}
 		
 		lines.push(...[
-			`| difficulté = $(recipe.min_rating`,
+			`| difficulté = ${recipe.min_rating}`,
 			`| type = ${recipeTypeMapping[recipe.type]}`,
 			`| id = ${recipe.id}`,
 			'}}',
