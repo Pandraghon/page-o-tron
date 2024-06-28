@@ -123,7 +123,7 @@
 		Weapon: 'arme',
 	}
 
-	const TypeMapping = {
+	const recipeTypeMapping = {
 		Axe: 'hache',
 		Dagger: 'dague',
 		Focus: 'focus',
