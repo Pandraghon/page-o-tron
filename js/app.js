@@ -629,9 +629,12 @@
 			lines.push(`| discipline${i > 0 ? i + 1 : ''} = ${disciplineMapping[recipe.disciplines[i]]}`);
 		}
 
+		if (recipe.output_item_count > 1) {
+			lines.push(`| produits = ${recipe.output_item_count}`);
+		}
+		
 		lines.push(...[
-			`| difficulté = ${recipe.min_rating}`,
-			`| produits = ${recipe.output_item_count}`,
+			`| difficulté = $(recipe.min_rating`,
 			`| type = ${recipeTypeMapping[recipe.type]}`,
 			`| id = ${recipe.id}`,
 			'}}',
@@ -683,10 +686,9 @@
 				}
 			}
 
-			if (data.default_skin) builder.boxLines.push(`| apparence par défaut = ${await getSkin(data.default_skin)}`);
 			if (data.rarity) builder.boxLines.push(	`| rareté = ${rarityMapping[data.rarity]}`);
 			if (data.level) builder.boxLines.push(`| niveau = ${data.level}`);
-			if (data.vendor_value) builder.boxLines.push(`| valeur = ${data.vendor_value}`);
+			if (data.default_skin) builder.boxLines.push(`| apparence par défaut = ${await getSkin(data.default_skin)}`);
 
 			if (data.flags.indexOf('AccountBound') !== -1) {
 				builder.boxLines.push('| lié = ca');
@@ -696,25 +698,27 @@
 			else if (data.flags.indexOf('SoulbindOnAcquire') !== -1) builder.boxLines.push('| lié = aa');
 			else if (data.flags.indexOf('SoulBindOnUse') !== -1) builder.boxLines.push('| lié = au');
 
+			if (data.vendor_value) builder.boxLines.push(`| valeur = ${data.vendor_value}`);
 			if (data.flags.indexOf('Unique') !== -1) builder.boxLines.push('| unique = oui');
 
 			const recipes = await fetch(`https://api.guildwars2.com/v2/recipes/search?output=${data.id}`)
 				.then(res => res.json());
 
-			builder.body.push(...[
-				`{{Liste de modes d'acquisition}}`,
-			])
-
-			if (recipes && recipes.length) {
+            if (recipes && recipes.length) {
 				builder.body.push(...[
+					`{{liste de modes d'acquisition|titre = non}}`,
 					'',
-					'== Recette =='
+					'=== Recette ==='
 				]);
 				for (let recipeId of recipes) {
 					const recipe = await fetch(`https://api.guildwars2.com/v2/recipes/${recipeId}`)
 						.then(res => res.json());
 					builder = await addRecipe(builder, recipe); 
 				}
+			} else {
+			builder.body.push(...[
+				`{{liste de modes d'acquisition}}`,
+			])
 			}
 
 			builder.body.push(...[
@@ -750,8 +754,8 @@
 						else if (res.flags.indexOf('Repeatable') !== -1) achievementsLine.push(`| type = répétable`);
 						
 						if (res.point_cap) achievementsLine.push(`| max points = ${res.point_cap}`);
-						if (res.description) achievementsLine.push(`| sous_desc = ${res.description}`);
 						if (res.requirement) achievementsLine.push(`| description = ${res.requirement}`);
+						if (res.description) achievementsLine.push(`| sous_desc = ${res.description}`);
 
 						achievementsLine.push(`| paliers = ${res.tiers.map(tier => `... : ${tier.count} ; ${tier.points}`).join('\n')}`);
 
