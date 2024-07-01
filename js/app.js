@@ -335,6 +335,10 @@
 		'https://render.guildwars2.com/file/9E676FEA12E7780C35A223FA12E10F542A0F7818/1201549.png': 'Recette divers exotique 3.png',
 	};
 
+	const skillSlotMapping = {
+		'Weapon_1': 'arme'
+	}
+
 	const itemTypeParser = {
 		Trophy: (_) => {
 			_.type = 'trophée';
@@ -832,13 +836,45 @@
 			else lines.push(...data.professions.map(prof => `| profession = ${professionMapping[prof]}`));
 
 			if (data.type in skillTypeMapping) lines.push(`| emplacement = ${skillTypeMapping[data.type]}`);
-
 			if (data.slot) {
-
+				const weapon_slot = data.slot.match(/^(?:Weapon|Downed)_(\d)/);
+				if (weapon_slot) lines.push(`| emplacement d'arme = ${weapon_slot[1]}`);
+				const profession_slot = data.slot.match(/^Profession_(\d)/);
+				if (profession_slot) lines.push(`| emplacement de profession = ${profession_slot[1]}`);
 			}
+			if (data.weapon_type) {
+				switch(data.weapon_type){
+					case "Greatsword":
+					case "Hammer":
+					case "Longbow":
+					case "Rifle":
+					case "Shortbow":
+					case "Staff":
+					case "Speargun":
+					case "Spear":
+					case "Trident":
+						lines.push(`| deuxmains = ${recipeTypeMapping[data.weapon_type]}`);
+						break;
+					default:
+						if (parseInt(data.slot.slice(-1)) < 4){
+							lines.push(`| mainprincipale = ${recipeTypeMapping[data.weapon_type]}`);
+							if (data.type === 'DualWield' && data.dual_wield) {
+								lines.push(`| mainsecondaire = ${recipeTypeMapping[data.dual_wield]}`);
+							}
+						} else {
+							lines.push(`| main secondaire = ${recipeTypeMapping[data.weapon_type]}`);
+						}
+				}
+			}
+
+			if (data.flags?.indexOf('NoUnderwater') !== -1) lines.push(`| aquatique = non`);
+			if (data.flags?.indexOf('GroundTargeted') !== -1) lines.push(`| ciblage = sol`);
 
 			if (data.cost) lines.push(`| énergie = ${data.cost}`);
 			if (data.initiative) lines.push(`| initiative = ${data.initiative}`);
+			if (data.description) lines.push(`| description = ${data.description}`);
+
+			if (data.id) lines.push(`| id = ${data.id}`);
 
 			return [
 				'{{Infobox compétence',
