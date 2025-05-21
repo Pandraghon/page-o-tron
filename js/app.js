@@ -1,6 +1,8 @@
 (() => {
 	
 	const categoriesSelect = document.getElementById('category');
+	const festivalsSelect = document.getElementById('festival');
+	const extensionsSelect = document.getElementById('extension');
 	const entriesDatalist = document.getElementById('entries');
 	const entryInput = document.getElementById('entry');
 	const iconInput = document.getElementById('icon-url');
@@ -721,14 +723,20 @@
 					builder = await addRecipe(builder, recipe); 
 				}
 			} else {
-			builder.body.push(...[
-				`{{liste de modes d'acquisition}}`,
-			])
+				builder.body.push(...[
+					`{{liste de modes d'acquisition}}`,
+				]);
 			}
 
 			builder.body.push(...[
 				`{{liste de recettes par ingrédient}}`,
-			])
+			]);
+
+			const festival = festivalsSelect.value,
+				extension = extensionsSelect.value;
+			
+			if (festival) builder.boxLines.push(`| festival = ${festival}`);
+			if (extension) builder.boxLines.push(`| extension = ${extension}`);
 
 			return [
 				`{{Infobox ${builder.boxType}`,
